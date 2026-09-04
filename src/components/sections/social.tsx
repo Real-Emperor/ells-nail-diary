@@ -9,7 +9,6 @@ import { Facebook } from "lucide-react"
 export function SocialSection() {
   const { t } = useI18n()
 
-  // Use real nail art photos for the social feed preview
   const feedImages = [
     "/gallery/gallery-1.jpg",
     "/gallery/gallery-2.jpg",
@@ -22,7 +21,6 @@ export function SocialSection() {
   return (
     <section id="social" className="py-20 md:py-28 bg-stone-50 dark:bg-stone-950">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +51,6 @@ export function SocialSection() {
           </a>
         </motion.div>
 
-        {/* Feed grid */}
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-3 gap-2 md:gap-3">
             {feedImages.map((src, i) => (
@@ -72,7 +69,6 @@ export function SocialSection() {
                   src={src}
                   alt={`Nail art ${i + 1}`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all duration-300 flex items-center justify-center">
                   <Facebook className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -82,7 +78,6 @@ export function SocialSection() {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="text-center mt-8">
           <a href={SITE_CONFIG.facebook} target="_blank" rel="noopener noreferrer">
             <Button
