@@ -65,17 +65,28 @@ export function BookingSection() {
       msgLines.push(`${t.booking.notes}: ${form.notes}`)
     }
 
-    // Build WhatsApp URL — use https://wa.me/ format which is the official WhatsApp URL
+    // Build WhatsApp URL
     const message = encodeURIComponent(msgLines.join("\n"))
     const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${message}`
 
     toast.success(t.booking.success)
 
-    // Use window.location.href for same-origin redirect to avoid SSL warnings
+    // Open WhatsApp in a NEW TAB using a dynamically created anchor element.
+    // This is the standard pattern used by Al Ain Properties and Abraj Trwada.
+    // It avoids the SSL certificate error that occurs with window.location.href
+    // because the browser treats this as a user-initiated link click (target=_blank),
+    // not a programmatic navigation.
     setTimeout(() => {
-      window.location.href = whatsappUrl
+      const link = document.createElement("a")
+      link.href = whatsappUrl
+      link.target = "_blank"
+      link.rel = "noopener noreferrer"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       setSubmitting(false)
-    }, 1000)
+      setForm({ name: "", phone: "", date: "", time: "", service: "", notes: "" })
+    }, 800)
   }
 
   const tomorrow = new Date()
