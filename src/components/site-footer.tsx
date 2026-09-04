@@ -172,7 +172,7 @@ export function SiteFooter() {
               className="flex items-center gap-1.5 group"
             >
               <img
-                src="/logo.svg"
+                src="/phronesis-logo.png"
                 alt="Phronesis Studio"
                 className="h-5 w-5 object-contain opacity-60 group-hover:opacity-100 transition-opacity"
               />

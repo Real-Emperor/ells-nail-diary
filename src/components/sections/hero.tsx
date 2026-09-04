@@ -18,16 +18,11 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-rose-50 via-stone-50 to-white dark:from-stone-950 dark:via-stone-950 dark:to-stone-950"
     >
-      {/* Background — poster image always shows first, video loads after */}
+      {/* Background — video only, no poster image overlap */}
       <div className="absolute inset-0 z-0">
-        {/* Poster image — always visible immediately */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/cover-photo.jpg)" }}
-        />
-        {/* Video — loads after client hydration, doesn't block initial render */}
+        {/* Video — loads after client hydration, fades in when ready */}
         {isClient && (
           <video
             autoPlay
@@ -35,10 +30,9 @@ export function HeroSection() {
             loop
             playsInline
             preload="auto"
-            poster="/cover-photo.jpg"
             onLoadedData={() => setVideoLoaded(true)}
             className={`w-full h-full object-cover transition-opacity duration-1000 ${
-              videoLoaded ? "opacity-30" : "opacity-0"
+              videoLoaded ? "opacity-25" : "opacity-0"
             }`}
           >
             <source src="/nail-video.mp4" type="video/mp4" />

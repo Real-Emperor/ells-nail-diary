@@ -50,7 +50,7 @@ export function GallerySection() {
 
   // The animation distance is exactly one set width
   // We duplicate the set and translate by the set width for seamless loop
-  const animationDuration = trackWidth > 0 ? `${trackWidth / 40}s` : "120s" // ~40px per second
+  const animationDuration = trackWidth > 0 ? `${trackWidth / 50}s` : "100s" // ~50px per second
 
   return (
     <section id="gallery" className="py-20 md:py-28 bg-stone-50 dark:bg-stone-950 overflow-hidden">
