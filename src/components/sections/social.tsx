@@ -10,12 +10,12 @@ export function SocialSection() {
   const { t } = useI18n()
 
   const feedImages = [
-    "/gallery/gallery-1.jpg",
-    "/gallery/gallery-2.jpg",
-    "/gallery/gallery-5.jpg",
-    "/gallery/gallery-6.jpg",
-    "/gallery/gallery-7.jpg",
-    "/gallery/gallery-10.jpg",
+    "/gallery/ellah-work-1.jpg",
+    "/gallery/ellah-work-2.jpg",
+    "/gallery/ellah-work-5.jpg",
+    "/gallery/ellah-work-6.jpg",
+    "/gallery/ellah-work-7.jpg",
+    "/gallery/ellah-work-10.jpg",
   ]
 
   return (
