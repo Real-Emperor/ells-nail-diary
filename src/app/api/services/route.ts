@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/db"
 
 export const dynamic = "force-dynamic"
 
-// GET — list all service prices
 export async function GET() {
   try {
+    const { db } = await import("@/lib/db")
     const services = await db.siteContent.findMany({
       where: { key: { startsWith: "service_" } },
     })
@@ -20,14 +19,13 @@ export async function GET() {
   }
 }
 
-// PUT — update service prices
 export async function PUT(request: NextRequest) {
   try {
+    const { db } = await import("@/lib/db")
     const { prices } = await request.json()
     if (!prices || typeof prices !== "object") {
       return NextResponse.json({ error: "Prices object required" }, { status: 400 })
     }
-
     for (const [key, value] of Object.entries(prices)) {
       const dbKey = `service_${key}`
       await db.siteContent.upsert({
@@ -36,7 +34,6 @@ export async function PUT(request: NextRequest) {
         create: { key: dbKey, value: String(value) },
       })
     }
-
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("PUT /api/services error:", error)

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/db"
 
 export const dynamic = "force-dynamic"
 
 // GET — list all gallery images
 export async function GET() {
   try {
+    const { db } = await import("@/lib/db")
     const images = await db.galleryImage.findMany({
       orderBy: { sortOrder: "asc" },
     })
@@ -16,26 +16,22 @@ export async function GET() {
   }
 }
 
-// POST — upload a new gallery image (base64 data from admin)
+// POST — upload a new gallery image
 export async function POST(request: NextRequest) {
   try {
+    const { db } = await import("@/lib/db")
     const { imageData, alt } = await request.json()
     if (!imageData) {
       return NextResponse.json({ error: "Image data required" }, { status: 400 })
     }
 
-    // Get the next sort order
     const lastImage = await db.galleryImage.findFirst({
       orderBy: { sortOrder: "desc" },
     })
     const sortOrder = (lastImage?.sortOrder || 0) + 1
 
     const image = await db.galleryImage.create({
-      data: {
-        url: imageData,
-        alt: alt || "",
-        sortOrder,
-      },
+      data: { url: imageData, alt: alt || "", sortOrder },
     })
 
     return NextResponse.json({ success: true, image })
@@ -48,13 +44,12 @@ export async function POST(request: NextRequest) {
 // DELETE — delete a gallery image
 export async function DELETE(request: NextRequest) {
   try {
+    const { db } = await import("@/lib/db")
     const { id } = await request.json()
     if (!id) {
       return NextResponse.json({ error: "Image ID required" }, { status: 400 })
     }
-
     await db.galleryImage.delete({ where: { id } })
-
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("DELETE /api/gallery error:", error)
