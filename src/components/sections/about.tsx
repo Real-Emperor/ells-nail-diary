@@ -1,6 +1,7 @@
 "use client"
 
 import { useI18n } from "@/i18n/provider"
+import { SITE_CONFIG } from "@/lib/site-config"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Heart, Star, Sparkles } from "lucide-react"
@@ -45,7 +46,7 @@ export function AboutSection() {
                       className="text-xl font-bold text-stone-800 dark:text-stone-100"
                       style={{ fontFamily: "var(--font-playfair)" }}
                     >
-                      {t.about.name}
+                      {SITE_CONFIG.artistName}
                     </div>
                     <div className="text-sm text-rose-500 tracking-wide">Nail Artist</div>
                   </div>

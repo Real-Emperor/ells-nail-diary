@@ -5,23 +5,26 @@ import { SITE_CONFIG } from "@/lib/site-config"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Instagram } from "lucide-react"
+import { Facebook } from "lucide-react"
+
+// Real nail art photos — downloaded from web image search
+const GALLERY_IMAGES = [
+  { src: "/gallery/gallery-1.jpg", alt: "Nude pink nails with daisy designs", size: "tall" },
+  { src: "/gallery/gallery-2.jpg", alt: "Almond nails with blue and white design", size: "normal" },
+  { src: "/gallery/gallery-3.webp", alt: "Colorful stiletto nails with patterns", size: "wide" },
+  { src: "/gallery/gallery-5.jpg", alt: "Tropical leaf nail art", size: "normal" },
+  { src: "/gallery/gallery-6.jpg", alt: "Orange striped nail art with gold", size: "tall" },
+  { src: "/gallery/gallery-7.jpg", alt: "Tropical 3D flower nail art", size: "normal" },
+  { src: "/gallery/gallery-9.jpg", alt: "Glossy nude pink Korean style nails", size: "wide" },
+  { src: "/gallery/gallery-10.jpg", alt: "Pink flower nail art with diamond", size: "normal" },
+  { src: "/gallery/gallery-11.jpg", alt: "Glossy nude manicure in warm light", size: "normal" },
+  { src: "/gallery/gallery-12.jpg", alt: "Nude nails with star and dot designs", size: "tall" },
+  { src: "/gallery/gallery-13.jpg", alt: "Nude almond nails with white swirl", size: "normal" },
+  { src: "/gallery/gallery-14.png", alt: "Pink nails with red tips", size: "normal" },
+]
 
 export function GallerySection() {
   const { t } = useI18n()
-
-  // Use a mix of Unsplash nail art images since we don't have the artist's full gallery
-  // These are professional nail art photos that match the aesthetic
-  const galleryImages = [
-    { src: "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=600&h=600&fit=crop&q=80", alt: "Minimalist nude nails", size: "tall" },
-    { src: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=600&fit=crop&q=80", alt: "French manicure", size: "normal" },
-    { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=600&fit=crop&q=80", alt: "Pink gel nails", size: "wide" },
-    { src: "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=600&h=600&fit=crop&q=80", alt: "Chrome nails", size: "normal" },
-    { src: "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=600&h=600&fit=crop&q=80", alt: "Natural nail design", size: "tall" },
-    { src: "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=600&h=600&fit=crop&q=80", alt: "Nail art design", size: "normal" },
-    { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=600&fit=crop&q=80", alt: "Builder gel design", size: "wide" },
-    { src: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=600&fit=crop&q=80", alt: "Soft gel extension", size: "normal" },
-  ]
 
   return (
     <section id="gallery" className="py-20 md:py-28 bg-stone-50 dark:bg-stone-950">
@@ -50,7 +53,7 @@ export function GallerySection() {
 
         {/* Gallery grid — masonry style */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {galleryImages.map((img, i) => (
+          {GALLERY_IMAGES.map((img, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -77,14 +80,14 @@ export function GallerySection() {
           ))}
         </div>
 
-        {/* Instagram CTA */}
+        {/* Facebook CTA */}
         <div className="text-center mt-10">
-          <a href={SITE_CONFIG.instagram} target="_blank" rel="noopener noreferrer">
+          <a href={SITE_CONFIG.facebook} target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
               className="bg-gradient-to-r from-rose-400 to-amber-400 hover:from-rose-500 hover:to-amber-500 text-white rounded-full px-8 shadow-md hover:shadow-lg transition-all"
             >
-              <Instagram className="h-5 w-5 me-2" />
+              <Facebook className="h-5 w-5 me-2" />
               {t.gallery.viewAll}
             </Button>
           </a>

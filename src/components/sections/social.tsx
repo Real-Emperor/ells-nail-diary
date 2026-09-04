@@ -4,19 +4,19 @@ import { useI18n } from "@/i18n/provider"
 import { SITE_CONFIG } from "@/lib/site-config"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Instagram, Facebook } from "lucide-react"
+import { Facebook } from "lucide-react"
 
 export function SocialSection() {
   const { t } = useI18n()
 
-  // Instagram-style feed preview (using Unsplash nail art images)
+  // Use real nail art photos for the social feed preview
   const feedImages = [
-    "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=400&h=400&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=400&h=400&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=400&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=400&h=400&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=400&h=400&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=400&h=400&fit=crop&q=80",
+    "/gallery/gallery-1.jpg",
+    "/gallery/gallery-2.jpg",
+    "/gallery/gallery-5.jpg",
+    "/gallery/gallery-6.jpg",
+    "/gallery/gallery-7.jpg",
+    "/gallery/gallery-10.jpg",
   ]
 
   return (
@@ -31,7 +31,7 @@ export function SocialSection() {
           className="text-center mb-12"
         >
           <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-rose-100 dark:bg-rose-950/30 text-rose-500 text-sm font-medium tracking-wide">
-            ✦ Instagram ✦
+            ✦ Facebook ✦
           </div>
           <h2
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-4"
@@ -43,23 +43,23 @@ export function SocialSection() {
             {t.social.subtitle}
           </p>
           <a
-            href={SITE_CONFIG.instagram}
+            href={SITE_CONFIG.facebook}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-rose-500 hover:text-rose-600 font-medium transition-colors"
           >
-            <Instagram className="h-5 w-5" />
+            <Facebook className="h-5 w-5" />
             {t.social.follow}
           </a>
         </motion.div>
 
-        {/* Instagram-style grid */}
+        {/* Feed grid */}
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-3 gap-2 md:gap-3">
             {feedImages.map((src, i) => (
               <motion.a
                 key={i}
-                href={SITE_CONFIG.instagram}
+                href={SITE_CONFIG.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -70,12 +70,12 @@ export function SocialSection() {
               >
                 <img
                   src={src}
-                  alt={`Instagram post ${i + 1}`}
+                  alt={`Nail art ${i + 1}`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all duration-300 flex items-center justify-center">
-                  <Instagram className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Facebook className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </motion.a>
             ))}
@@ -84,13 +84,13 @@ export function SocialSection() {
 
         {/* CTA */}
         <div className="text-center mt-8">
-          <a href={SITE_CONFIG.instagram} target="_blank" rel="noopener noreferrer">
+          <a href={SITE_CONFIG.facebook} target="_blank" rel="noopener noreferrer">
             <Button
               variant="outline"
               size="lg"
               className="rounded-full border-rose-300 hover:bg-rose-50 hover:border-rose-400 dark:border-rose-900 dark:hover:bg-rose-950/30 transition-all"
             >
-              <Instagram className="h-5 w-5 me-2 text-rose-500" />
+              <Facebook className="h-5 w-5 me-2 text-rose-500" />
               {t.social.follow}
             </Button>
           </a>

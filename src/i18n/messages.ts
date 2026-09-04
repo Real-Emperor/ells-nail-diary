@@ -80,7 +80,7 @@ export const translations = {
     gallery: {
       title: "Gallery",
       subtitle: "A glimpse into the artistry of ELL's Nail Diary",
-      viewAll: "View on Instagram",
+      viewAll: "View on Facebook",
     },
     about: {
       title: "About the Artist",
@@ -112,8 +112,8 @@ export const translations = {
     },
     social: {
       title: "Follow the Diary",
-      subtitle: "Daily nail art inspiration on Instagram",
-      follow: "Follow @ellsnaildiary",
+      subtitle: "Daily nail art inspiration on Facebook",
+      follow: "Visit our Facebook Page",
     },
     booking: {
       title: "Book Your Appointment",
@@ -144,7 +144,7 @@ export const translations = {
       madeWith: "Made with",
       inBohol: "in Bohol Island, Philippines",
       address: "Bohol Island, Philippines",
-      hoursValue: "Mon - Sat: 9 AM - 6 PM",
+      hoursValue: "Every Day: 10 AM - 6 PM",
     },
     whatsapp: {
       label: "WhatsApp",
@@ -221,7 +221,7 @@ export const translations = {
     gallery: {
       title: "Gallery",
       subtitle: "Isang sulyap sa sining ng ELL's Nail Diary",
-      viewAll: "Tingnan sa Instagram",
+      viewAll: "Tingnan sa Facebook",
     },
     about: {
       title: "Tungkol sa Artist",
@@ -253,8 +253,8 @@ export const translations = {
     },
     social: {
       title: "Sundan ang Diary",
-      subtitle: "Araw-araw na nail art inspiration sa Instagram",
-      follow: "Sundan si @ellsnaildiary",
+      subtitle: "Araw-araw na nail art inspiration sa Facebook",
+      follow: "Bisitahin ang aming Facebook Page",
     },
     booking: {
       title: "I-book ang Appointment Mo",
@@ -285,7 +285,7 @@ export const translations = {
       madeWith: "Gawa ng",
       inBohol: "sa Bohol Island, Pilipinas",
       address: "Bohol Island, Pilipinas",
-      hoursValue: "Lun - Sab: 9 AM - 6 PM",
+      hoursValue: "Araw-Araw: 10 AM - 6 PM",
     },
     whatsapp: {
       label: "WhatsApp",
@@ -362,7 +362,7 @@ export const translations = {
     gallery: {
       title: "갤러리",
       subtitle: "ELL's Nail Diary의 아티스트를 만나보세요",
-      viewAll: "Instagram에서 보기",
+      viewAll: "Facebook에서 보기",
     },
     about: {
       title: "아티스트 소개",
@@ -394,8 +394,8 @@ export const translations = {
     },
     social: {
       title: "다이어리 팔로우하기",
-      subtitle: "Instagram에서 매일 네일 아트 영감을",
-      follow: "@ellsnaildiary 팔로우하기",
+      subtitle: "Facebook에서 매일 네일 아트 영감을",
+      follow: "Facebook 페이지 방문하기",
     },
     booking: {
       title: "예약하기",
@@ -426,7 +426,7 @@ export const translations = {
       madeWith: "제작:",
       inBohol: "필리핀 보홀섬에서",
       address: "필리핀 보홀섬",
-      hoursValue: "월-토: 오전 9시-오후 6시",
+      hoursValue: "매일: 오전 10시-오후 6시",
     },
     whatsapp: {
       label: "WhatsApp",
@@ -503,7 +503,7 @@ export const translations = {
     gallery: {
       title: "作品展示",
       subtitle: "一览 ELL's Nail Diary 的美甲艺术",
-      viewAll: "在 Instagram 上查看",
+      viewAll: "在 Facebook 上查看",
     },
     about: {
       title: "关于美甲师",
@@ -535,8 +535,8 @@ export const translations = {
     },
     social: {
       title: "关注日记",
-      subtitle: "在 Instagram 上获取每日美甲灵感",
-      follow: "关注 @ellsnaildiary",
+      subtitle: "在 Facebook 上获取每日美甲灵感",
+      follow: "访问我们的 Facebook 页面",
     },
     booking: {
       title: "预约服务",
@@ -567,7 +567,7 @@ export const translations = {
       madeWith: "用心制作",
       inBohol: "菲律宾保和岛",
       address: "菲律宾保和岛",
-      hoursValue: "周一至周六: 上午 9 点 - 下午 6 点",
+      hoursValue: "每天: 上午10点 - 下午6点",
     },
     whatsapp: {
       label: "WhatsApp",

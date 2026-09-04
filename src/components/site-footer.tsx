@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/i18n/provider"
 import { SITE_CONFIG, getWhatsAppLink } from "@/lib/site-config"
-import { Instagram, Facebook, MapPin, Phone, Mail, Clock, Heart, MessageCircle } from "lucide-react"
+import { Facebook, MapPin, Phone, Mail, Clock, Heart, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function SiteFooter() {
@@ -15,6 +15,20 @@ export function SiteFooter() {
     { label: t.nav.about, href: "#about" },
     { label: t.nav.loyalty, href: "#loyalty" },
   ]
+
+  const getHours = () => {
+    if (locale === "ko") return SITE_CONFIG.hours.ko
+    if (locale === "zh") return SITE_CONFIG.hours.zh
+    if (locale === "tl") return SITE_CONFIG.hours.tl
+    return SITE_CONFIG.hours.en
+  }
+
+  const getAddress = () => {
+    if (locale === "ko") return SITE_CONFIG.address.ko
+    if (locale === "zh") return SITE_CONFIG.address.zh
+    if (locale === "tl") return SITE_CONFIG.address.tl
+    return SITE_CONFIG.address.en
+  }
 
   return (
     <footer className="bg-stone-900 dark:bg-stone-950 text-stone-300 mt-auto">
@@ -45,16 +59,8 @@ export function SiteFooter() {
             <p className="text-sm text-stone-400 leading-relaxed mb-4">
               {t.footer.tagline}
             </p>
-            {/* Social icons */}
+            {/* Social icons — Facebook + WhatsApp only */}
             <div className="flex gap-3">
-              <a
-                href={SITE_CONFIG.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-rose-500 flex items-center justify-center transition-colors"
-              >
-                <Instagram className="h-4 w-4 text-white" />
-              </a>
               <a
                 href={SITE_CONFIG.facebook}
                 target="_blank"
@@ -101,9 +107,7 @@ export function SiteFooter() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-rose-400 mt-0.5 flex-shrink-0" />
-                <span className="text-stone-400">
-                  {locale === "ko" ? SITE_CONFIG.address.ko : locale === "zh" ? SITE_CONFIG.address.zh : locale === "tl" ? SITE_CONFIG.address.tl : SITE_CONFIG.address.en}
-                </span>
+                <span className="text-stone-400">{getAddress()}</span>
               </li>
               <li>
                 <a
@@ -125,9 +129,7 @@ export function SiteFooter() {
               </li>
               <li className="flex items-start gap-3">
                 <Clock className="h-4 w-4 text-rose-400 mt-0.5 flex-shrink-0" />
-                <span className="text-stone-400">
-                  {locale === "ko" ? SITE_CONFIG.hours.ko : locale === "zh" ? SITE_CONFIG.hours.zh : locale === "tl" ? SITE_CONFIG.hours.tl : SITE_CONFIG.hours.en}
-                </span>
+                <span className="text-stone-400">{getHours()}</span>
               </li>
             </ul>
           </div>
@@ -151,7 +153,7 @@ export function SiteFooter() {
         {/* Bottom bar */}
         <div className="border-t border-stone-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-stone-500 text-center md:text-left">
-            © {new Date().getFullYear()} {SITE_CONFIG.brandName}. {t.footer.rights}
+            © {new Date().getFullYear()} {SITE_CONFIG.brandName} · {SITE_CONFIG.artistName}. {t.footer.rights}
           </p>
           <p className="text-xs text-stone-500 flex items-center gap-1.5">
             {t.footer.madeWith}

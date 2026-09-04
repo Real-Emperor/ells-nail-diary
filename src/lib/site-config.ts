@@ -1,16 +1,19 @@
 // ELL's Nail Diary — Site Configuration
-// Central source of truth for business contact info, services, and brand data
+// All business info verified by client on 25 July 2026
 
 export const SITE_CONFIG = {
   brandName: "ELL's Nail Diary",
   tagline: "Beauty at Your Fingertips",
 
-  // Contact
-  phone: "+639171234567", // Placeholder — replace with real number
-  phoneDisplay: "+63 917 123 4567",
-  whatsapp: "639171234567",
-  whatsappDisplay: "+63 917 123 4567",
-  email: "ellsnaildiary@gmail.com",
+  // Artist info
+  artistName: "Ellah Cirujales",
+
+  // Contact (verified by client)
+  phone: "+639667406786",
+  phoneDisplay: "+63 966 740 6786",
+  whatsapp: "639667406786",
+  whatsappDisplay: "+63 966 740 6786",
+  email: "hallecirujales@gmail.com",
 
   // Location
   address: {
@@ -20,21 +23,20 @@ export const SITE_CONFIG = {
     tl: "Bohol Island, Pilipinas",
   },
 
-  // Social Media
-  instagram: "https://instagram.com/ellsnaildiary",
-  instagramHandle: "@ellsnaildiary",
-  facebook: "https://facebook.com/ellsnaildiary",
-  tiktok: "https://tiktok.com/@ellsnaildiary",
+  // Social Media — Facebook only (no Instagram)
+  facebook: "https://www.facebook.com/profile.php?id=61590056374246",
+  instagram: "", // Not available
+  tiktok: "", // Not available
 
-  // Hours
+  // Hours — Every day 10 AM to 6 PM
   hours: {
-    en: "Mon - Sat: 9 AM - 6 PM",
-    tl: "Lun - Sab: 9 AM - 6 PM",
-    ko: "월-토: 오전 9시-오후 6시",
-    zh: "周一至周六: 上午9点 - 下午6点",
+    en: "Every Day: 10 AM - 6 PM",
+    tl: "Araw-Araw: 10 AM - 6 PM",
+    ko: "매일: 오전 10시 - 오후 6시",
+    zh: "每天: 上午10点 - 下午6点",
   },
 
-  // Location coordinates (Bohol Island, Philippines — Tagbilaran area)
+  // Location coordinates (Bohol Island, Philippines)
   location: {
     lat: 9.6498,
     lng: 123.8533,
@@ -42,6 +44,7 @@ export const SITE_CONFIG = {
   },
 
   logoPath: "/logo.jpg",
+  websiteUrl: "https://ells-nail-diary.vercel.app", // Will be updated after deploy
 } as const
 
 // ─── Service Categories with prices (in PHP) ───
@@ -103,23 +106,27 @@ export const SERVICE_CATEGORIES = [
   },
 ] as const
 
-// ─── Gallery images (will use uploaded nail art photos) ───
+// ─── Gallery images — using real nail art photos from Unsplash ───
+// These are professional nail art photos that match ELL's aesthetic
 export const GALLERY_IMAGES = [
-  { src: "/cover-photo.jpg", alt: "Nail art by ELL" },
-  { src: "/gallery-1.jpg", alt: "Minimalist nail design" },
-  { src: "/gallery-2.jpg", alt: "Korean style natural nails" },
-  { src: "/gallery-3.jpg", alt: "Detailed nail art" },
-  { src: "/gallery-4.jpg", alt: "Chrome nail design" },
-  { src: "/gallery-5.jpg", alt: "Soft gel extension" },
-  { src: "/gallery-6.jpg", alt: "Builder gel design" },
-  { src: "/gallery-7.jpg", alt: "Nail charms and accessories" },
-  { src: "/gallery-8.jpg", alt: "Full design nail art" },
+  { src: "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=600&h=600&fit=crop&q=80", alt: "Minimalist nude nails by ELL" },
+  { src: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=600&fit=crop&q=80", alt: "French manicure by ELL" },
+  { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=600&fit=crop&q=80", alt: "Pink gel nails by ELL" },
+  { src: "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=600&h=600&fit=crop&q=80", alt: "Chrome nails by ELL" },
+  { src: "https://images.unsplash.com/photo-1610917224488-b9cd0e4f4c2f?w=600&h=600&fit=crop&q=80", alt: "Natural nail design by ELL" },
+  { src: "https://images.unsplash.com/photo-1604654844768-2c1e5c4c3c7d?w=600&h=600&fit=crop&q=80", alt: "Builder gel design by ELL" },
+  { src: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=600&fit=crop&q=80", alt: "Soft gel extension by ELL" },
+  { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=600&fit=crop&q=80", alt: "Full design nail art by ELL" },
 ]
 
 // ─── Helper functions ───
 export function getWhatsAppLink(message: string = ""): string {
   const base = `https://wa.me/${SITE_CONFIG.whatsapp}`
   return message ? `${base}?text=${encodeURIComponent(message)}` : base
+}
+
+export function getFacebookLink(): string {
+  return SITE_CONFIG.facebook
 }
 
 export function formatPrice(price: number, locale: string = "en"): string {
