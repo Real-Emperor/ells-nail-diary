@@ -3,24 +3,23 @@
 import { useI18n } from "@/i18n/provider"
 import { SITE_CONFIG } from "@/lib/site-config"
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Facebook } from "lucide-react"
 
 // Real nail art photos — downloaded from web image search
 const GALLERY_IMAGES = [
-  { src: "/gallery/gallery-1.jpg", alt: "Nude pink nails with daisy designs", size: "tall" },
-  { src: "/gallery/gallery-2.jpg", alt: "Almond nails with blue and white design", size: "normal" },
-  { src: "/gallery/gallery-3.webp", alt: "Colorful stiletto nails with patterns", size: "wide" },
-  { src: "/gallery/gallery-5.jpg", alt: "Tropical leaf nail art", size: "normal" },
-  { src: "/gallery/gallery-6.jpg", alt: "Orange striped nail art with gold", size: "tall" },
-  { src: "/gallery/gallery-7.jpg", alt: "Tropical 3D flower nail art", size: "normal" },
-  { src: "/gallery/gallery-9.jpg", alt: "Glossy nude pink Korean style nails", size: "wide" },
-  { src: "/gallery/gallery-10.jpg", alt: "Pink flower nail art with diamond", size: "normal" },
-  { src: "/gallery/gallery-11.jpg", alt: "Glossy nude manicure in warm light", size: "normal" },
-  { src: "/gallery/gallery-12.jpg", alt: "Nude nails with star and dot designs", size: "tall" },
-  { src: "/gallery/gallery-13.jpg", alt: "Nude almond nails with white swirl", size: "normal" },
-  { src: "/gallery/gallery-14.png", alt: "Pink nails with red tips", size: "normal" },
+  { src: "/gallery/gallery-1.jpg", alt: "Nude pink nails with daisy designs", span: "" },
+  { src: "/gallery/gallery-2.jpg", alt: "Almond nails with blue and white design", span: "" },
+  { src: "/gallery/gallery-3.webp", alt: "Colorful stiletto nails with patterns", span: "" },
+  { src: "/gallery/gallery-5.jpg", alt: "Tropical leaf nail art", span: "" },
+  { src: "/gallery/gallery-6.jpg", alt: "Orange striped nail art with gold", span: "" },
+  { src: "/gallery/gallery-7.jpg", alt: "Tropical 3D flower nail art", span: "" },
+  { src: "/gallery/gallery-9.jpg", alt: "Glossy nude pink Korean style nails", span: "" },
+  { src: "/gallery/gallery-10.jpg", alt: "Pink flower nail art with diamond", span: "" },
+  { src: "/gallery/gallery-11.jpg", alt: "Glossy nude manicure in warm light", span: "" },
+  { src: "/gallery/gallery-12.jpg", alt: "Nude nails with star and dot designs", span: "" },
+  { src: "/gallery/gallery-13.jpg", alt: "Nude almond nails with white swirl", span: "" },
+  { src: "/gallery/gallery-14.png", alt: "Pink nails with red tips", span: "" },
 ]
 
 export function GallerySection() {
@@ -51,7 +50,7 @@ export function GallerySection() {
           </p>
         </motion.div>
 
-        {/* Gallery grid — masonry style */}
+        {/* Gallery grid — uniform squares */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {GALLERY_IMAGES.map((img, i) => (
             <motion.div
@@ -60,15 +59,12 @@ export function GallerySection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className={`relative overflow-hidden rounded-2xl group cursor-pointer ${
-                img.size === "tall" ? "row-span-2" : img.size === "wide" ? "col-span-2" : ""
-              }`}
+              className="relative aspect-square overflow-hidden rounded-2xl group cursor-pointer"
             >
               <img
                 src={img.src}
                 alt={img.alt}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
               />
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
