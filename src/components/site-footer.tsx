@@ -151,15 +151,39 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-stone-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-stone-500 text-center md:text-left">
-            © {new Date().getFullYear()} {SITE_CONFIG.brandName} · {SITE_CONFIG.artistName}. {t.footer.rights}
-          </p>
-          <p className="text-xs text-stone-500 flex items-center gap-1.5">
-            {t.footer.madeWith}
-            <Heart className="h-3 w-3 text-rose-400 fill-rose-400" />
-            {t.footer.inBohol}
-          </p>
+        <div className="border-t border-stone-800 pt-6 flex flex-col items-center gap-3">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 w-full">
+            <p className="text-xs text-stone-500 text-center md:text-left">
+              © {new Date().getFullYear()} {SITE_CONFIG.brandName} · {SITE_CONFIG.artistName}. {t.footer.rights}
+            </p>
+            <p className="text-xs text-stone-500 flex items-center gap-1.5">
+              {t.footer.madeWith}
+              <Heart className="h-3 w-3 text-rose-400 fill-rose-400" />
+              {t.footer.inBohol}
+            </p>
+          </div>
+          {/* Phronesis Studio signature */}
+          <div className="border-t border-stone-800/50 pt-4 mt-2 flex items-center gap-2">
+            <span className="text-xs text-stone-500">Website crafted by</span>
+            <a
+              href="https://phronesis-studio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 group"
+            >
+              <img
+                src="/logo.svg"
+                alt="Phronesis Studio"
+                className="h-5 w-5 object-contain opacity-60 group-hover:opacity-100 transition-opacity"
+              />
+              <span
+                className="text-xs font-semibold text-stone-400 group-hover:text-rose-400 transition-colors"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                Phronesis Studio
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

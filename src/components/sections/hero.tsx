@@ -1,33 +1,51 @@
 "use client"
 
 import { useI18n } from "@/i18n/provider"
-import { getWhatsAppLink } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
 import { Calendar, ArrowRight, ChevronDown } from "lucide-react"
 import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
 
 export function HeroSection() {
-  const { t, locale } = useI18n()
+  const { t } = useI18n()
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background video — faded, artistic */}
+      {/* Background — poster image always shows first, video loads after */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/cover-photo.jpg"
-          className="w-full h-full object-cover opacity-30"
-        >
-          <source src="/nail-video.mp4" type="video/mp4" />
-        </video>
+        {/* Poster image — always visible immediately */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(/cover-photo.jpg)" }}
+        />
+        {/* Video — loads after client hydration, doesn't block initial render */}
+        {isClient && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/cover-photo.jpg"
+            onLoadedData={() => setVideoLoaded(true)}
+            className={`w-full h-full object-cover transition-opacity duration-1000 ${
+              videoLoaded ? "opacity-30" : "opacity-0"
+            }`}
+          >
+            <source src="/nail-video.mp4" type="video/mp4" />
+          </video>
+        )}
         {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-rose-50/60 via-stone-50/70 to-white dark:from-stone-950/60 dark:via-stone-950/70 dark:to-stone-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-rose-50/70 via-stone-50/75 to-white dark:from-stone-950/70 dark:via-stone-950/75 dark:to-stone-950" />
         {/* Decorative blurred circles */}
         <div className="absolute top-1/4 left-10 w-72 h-72 bg-rose-300/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl" />

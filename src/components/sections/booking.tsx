@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useI18n } from "@/i18n/provider"
-import { SITE_CONFIG, SERVICE_CATEGORIES, getWhatsAppLink } from "@/lib/site-config"
+import { SITE_CONFIG, SERVICE_CATEGORIES } from "@/lib/site-config"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -31,7 +31,6 @@ export function BookingSection() {
   })
   const [submitting, setSubmitting] = useState(false)
 
-  // Flatten all services for the dropdown
   const allServices = SERVICE_CATEGORIES.flatMap(cat =>
     cat.items.map(item => ({
       key: item.key,
@@ -43,13 +42,15 @@ export function BookingSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name || !form.phone || !form.date || !form.time || !form.service) {
-      toast.error("Please fill in all required fields")
+      toast.error(locale === "ko" ? "모든 필수 항목을 입력해주세요" :
+        locale === "zh" ? "请填写所有必填项" :
+        locale === "tl" ? "Punan ang lahat ng kinakailangan" :
+        "Please fill in all required fields")
       return
     }
 
     setSubmitting(true)
 
-    // Build WhatsApp message
     const selectedService = allServices.find(s => s.key === form.service)
     const msgLines = [
       `*${t.whatsapp.message}*`,
@@ -64,19 +65,19 @@ export function BookingSection() {
       msgLines.push(`${t.booking.notes}: ${form.notes}`)
     }
 
-    const whatsappUrl = getWhatsAppLink(msgLines.join("\n"))
+    // Build WhatsApp URL — use https://wa.me/ format which is the official WhatsApp URL
+    const message = encodeURIComponent(msgLines.join("\n"))
+    const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${message}`
 
     toast.success(t.booking.success)
 
-    // Open WhatsApp after a short delay
+    // Use window.location.href for same-origin redirect to avoid SSL warnings
     setTimeout(() => {
-      window.open(whatsappUrl, "_blank")
+      window.location.href = whatsappUrl
       setSubmitting(false)
-      setForm({ name: "", phone: "", date: "", time: "", service: "", notes: "" })
     }, 1000)
   }
 
-  // Get tomorrow's date as minimum
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
   const minDate = tomorrow.toISOString().split("T")[0]
@@ -84,7 +85,6 @@ export function BookingSection() {
   return (
     <section id="booking" className="py-20 md:py-28 bg-gradient-to-b from-white via-rose-50/30 to-rose-100/20 dark:from-stone-950 dark:via-stone-900/30 dark:to-stone-950">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +106,6 @@ export function BookingSection() {
           </p>
         </motion.div>
 
-        {/* Booking form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -116,7 +115,6 @@ export function BookingSection() {
         >
           <Card className="p-6 md:p-8 border-rose-100 dark:border-stone-800 rounded-3xl shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
               <div>
                 <Label htmlFor="name" className="text-sm font-medium text-stone-700 dark:text-stone-200 mb-1.5 flex items-center gap-2">
                   <User className="h-4 w-4 text-rose-400" />
@@ -128,11 +126,9 @@ export function BookingSection() {
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
                   className="rounded-xl border-rose-100 dark:border-stone-700 focus:border-rose-400"
-                  placeholder="..."
                 />
               </div>
 
-              {/* Phone */}
               <div>
                 <Label htmlFor="phone" className="text-sm font-medium text-stone-700 dark:text-stone-200 mb-1.5 flex items-center gap-2">
                   <Phone className="h-4 w-4 text-rose-400" />
@@ -150,7 +146,6 @@ export function BookingSection() {
                 />
               </div>
 
-              {/* Date & Time row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="date" className="text-sm font-medium text-stone-700 dark:text-stone-200 mb-1.5 flex items-center gap-2">
@@ -190,7 +185,6 @@ export function BookingSection() {
                 </div>
               </div>
 
-              {/* Service */}
               <div>
                 <Label htmlFor="service" className="text-sm font-medium text-stone-700 dark:text-stone-200 mb-1.5 flex items-center gap-2">
                   <MessageCircle className="h-4 w-4 text-rose-400" />
@@ -224,7 +218,6 @@ export function BookingSection() {
                 </Select>
               </div>
 
-              {/* Notes */}
               <div>
                 <Label htmlFor="notes" className="text-sm font-medium text-stone-700 dark:text-stone-200 mb-1.5 block">
                   {t.booking.notes}
@@ -234,11 +227,9 @@ export function BookingSection() {
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   className="rounded-xl border-rose-100 dark:border-stone-700 focus:border-rose-400 min-h-[80px]"
-                  placeholder="..."
                 />
               </div>
 
-              {/* Submit */}
               <Button
                 type="submit"
                 disabled={submitting}
