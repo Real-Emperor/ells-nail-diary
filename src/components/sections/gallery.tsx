@@ -5,7 +5,7 @@ import { SITE_CONFIG } from "@/lib/site-config"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Facebook } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 
 // Real nail art photos by Ellah Cirujales
 const GALLERY_IMAGES = [
@@ -21,12 +21,22 @@ const GALLERY_IMAGES = [
   { src: "/gallery/ellah-work-10.jpg", alt: "Nail art by Ellah Cirujales" },
 ]
 
+// Speed in pixels per second — much faster now
+const SCROLL_SPEED = 120 // was 50, now 120 — visibly faster
+
 export function GallerySection() {
   const { t } = useI18n()
   const [reducedMotion, setReducedMotion] = useState(false)
   const [paused, setPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const trackRef = useRef<HTMLDivElement>(null)
   const [trackWidth, setTrackWidth] = useState(0)
+  const [manualOffset, setManualOffset] = useState(0)
+
+  // Drag state
+  const dragStartX = useRef(0)
+  const dragStartOffset = useRef(0)
+  const dragDistance = useRef(0)
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -37,10 +47,9 @@ export function GallerySection() {
     return () => mq.removeEventListener("change", handler)
   }, [])
 
-  // Measure the single-set width to configure seamless loop
+  // Measure the single-set width for seamless loop
   useEffect(() => {
     if (trackRef.current) {
-      // Width of one set of images
       const singleSet = trackRef.current.querySelector("[data-set='0']") as HTMLElement
       if (singleSet) {
         setTrackWidth(singleSet.offsetWidth)
@@ -48,14 +57,75 @@ export function GallerySection() {
     }
   }, [])
 
-  // The animation distance is exactly one set width
-  // We duplicate the set and translate by the set width for seamless loop
-  const animationDuration = trackWidth > 0 ? `${trackWidth / 50}s` : "100s" // ~50px per second
+  // Animation: use requestAnimationFrame for smooth manual offset integration
+  const animFrameRef = useRef<number>(0)
+  const lastTimeRef = useRef<number>(0)
+  const currentOffsetRef = useRef(0)
+
+  const animate = useCallback((time: number) => {
+    if (!trackWidth || reducedMotion) return
+
+    if (lastTimeRef.current === 0) lastTimeRef.current = time
+    const delta = time - lastTimeRef.current
+    lastTimeRef.current = time
+
+    if (!paused && !isDragging) {
+      // Move forward by SCROLL_SPEED pixels per second
+      currentOffsetRef.current -= (SCROLL_SPEED * delta) / 1000
+
+      // Seamless loop: when we've scrolled past one full set, reset by +trackWidth
+      // The track has 2 sets, so we loop within [-trackWidth, 0]
+      if (currentOffsetRef.current <= -trackWidth) {
+        currentOffsetRef.current += trackWidth
+      }
+
+      setManualOffset(currentOffsetRef.current)
+    }
+
+    animFrameRef.current = requestAnimationFrame(animate)
+  }, [trackWidth, paused, isDragging, reducedMotion])
+
+  useEffect(() => {
+    if (!reducedMotion && trackWidth > 0) {
+      animFrameRef.current = requestAnimationFrame(animate)
+      return () => cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [animate, reducedMotion, trackWidth])
+
+  // Pointer drag handlers
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (reducedMotion) return
+    setIsDragging(true)
+    dragStartX.current = e.clientX
+    dragStartOffset.current = currentOffsetRef.current
+    dragDistance.current = 0
+    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+  }
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return
+    const dx = e.clientX - dragStartX.current
+    dragDistance.current = dx
+    let newOffset = dragStartOffset.current + dx
+
+    // Seamless loop during drag
+    if (newOffset > 0) newOffset -= trackWidth
+    if (newOffset <= -trackWidth) newOffset += trackWidth
+
+    currentOffsetRef.current = newOffset
+    setManualOffset(newOffset)
+  }
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    setIsDragging(false)
+    try { (e.target as HTMLElement).releasePointerCapture(e.pointerId) } catch {}
+  }
+
+  const transform = `translateX(${manualOffset}px)`
 
   return (
     <section id="gallery" className="py-20 md:py-28 bg-stone-50 dark:bg-stone-950 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +148,7 @@ export function GallerySection() {
         </motion.div>
       </div>
 
-      {/* Horizontal auto-scrolling gallery — full width, no container constraint */}
+      {/* Horizontal auto-scrolling gallery */}
       <div
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setPaused(true)}
@@ -89,7 +159,7 @@ export function GallerySection() {
         <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-stone-50 dark:from-stone-950 to-transparent z-10 pointer-events-none" />
 
         {reducedMotion ? (
-          // Static horizontally scrollable gallery for reduced motion
+          // Static horizontally scrollable gallery
           <div
             ref={trackRef}
             className="flex gap-4 md:gap-6 px-6 md:px-12 overflow-x-auto no-scrollbar pb-4"
@@ -99,15 +169,18 @@ export function GallerySection() {
             ))}
           </div>
         ) : (
-          // Animated infinite marquee gallery
-          <div className="relative">
+          // Animated + draggable gallery
+          <div
+            className="relative cursor-grab active:cursor-grabbing select-none"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+          >
             <div
               ref={trackRef}
-              className="flex gap-4 md:gap-6 will-change-transform"
-              style={{
-                animation: `gallery-marquee ${animationDuration} linear infinite`,
-                animationPlayState: paused ? "paused" : "running",
-              }}
+              className="flex will-change-transform"
+              style={{ transform, transition: isDragging ? "none" : "none" }}
             >
               {/* First set */}
               <div className="flex gap-4 md:gap-6 flex-shrink-0" data-set="0">
@@ -126,6 +199,14 @@ export function GallerySection() {
         )}
       </div>
 
+      {/* Hint text */}
+      {!reducedMotion && (
+        <p className="text-center text-xs text-stone-400 mt-4">
+          {/* Hint in current language */}
+          <span className="hidden:inline">Hover to pause · Drag to scroll manually</span>
+        </p>
+      )}
+
       {/* Facebook CTA */}
       <div className="container mx-auto px-4 mt-10 text-center">
         <a href={SITE_CONFIG.facebook} target="_blank" rel="noopener noreferrer">
@@ -138,18 +219,6 @@ export function GallerySection() {
           </Button>
         </a>
       </div>
-
-      {/* Inline CSS for the marquee animation */}
-      <style jsx>{`
-        @keyframes gallery-marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </section>
   )
 }
@@ -158,7 +227,7 @@ export function GallerySection() {
 function GalleryItem({ src, alt }: { src: string; alt: string }) {
   return (
     <div
-      className="flex-shrink-0 w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] md:w-[280px] md:h-[280px] lg:w-[320px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-900 border border-stone-200 dark:border-stone-700 shadow-md hover:shadow-xl transition-shadow duration-300 group relative"
+      className="flex-shrink-0 w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] md:w-[280px] md:h-[280px] lg:w-[320px] lg:h-[320px] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-900 border border-stone-200 dark:border-stone-700 shadow-md hover:shadow-xl transition-shadow duration-300 group relative pointer-events-none"
     >
       <img
         src={src}
